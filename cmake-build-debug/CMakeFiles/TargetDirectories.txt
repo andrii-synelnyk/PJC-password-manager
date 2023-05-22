@@ -1,0 +1,3 @@
+/Users/andrii_synelnyk/CLionProjects/Big Project/Password Generator/cmake-build-debug/CMakeFiles/Password_Generator.dir
+/Users/andrii_synelnyk/CLionProjects/Big Project/Password Generator/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/andrii_synelnyk/CLionProjects/Big Project/Password Generator/cmake-build-debug/CMakeFiles/rebuild_cache.dir
