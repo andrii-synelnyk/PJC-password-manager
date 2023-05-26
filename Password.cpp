@@ -46,3 +46,7 @@ void Password::setWebsite(const std::string& website) {
 void Password::setLogin(const std::string& login) {
     this->login = login;
 }
+
+std::string Password::to_string() const {
+    return name + ';' + passwordText + ';' + category + ';' + website + ';' + login;
+}

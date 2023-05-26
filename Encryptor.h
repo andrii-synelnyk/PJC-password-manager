@@ -10,12 +10,11 @@ public:
     // Constructor
     Encryptor();
 
-    // Getters
-    void shiftFile(const std::string& filePath, const std::string& password, bool decrypt);
+    void encrypt(const std::string& filePath, const std::string& password, const std::string& data);
+    std::string decrypt(const std::string& filePath, const std::string& password);
+    bool isFileEmpty(const std::string& filePath);
 
 private:
     int generateShift(const std::string& password);
     int computeChecksum(const std::string& data);
-    int getCheckSumFromFile(const std::string& data);
-    bool isValidDecryption(const std::string& data, int storedChecksum);
 };

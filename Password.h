@@ -22,6 +22,9 @@ public:
     void setWebsite(const std::string& website);
     void setLogin(const std::string& login);
 
+    // To string
+    std::string to_string() const;
+
 private:
     std::string name;
     std::string passwordText;

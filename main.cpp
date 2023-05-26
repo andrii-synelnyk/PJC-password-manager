@@ -2,13 +2,17 @@
 #include <string>
 #include <vector>
 #include <filesystem>
-// Include other necessary header files here
+
+#include "PasswordManager.h"
 
 std::string chooseFile();
+void userAddPassword(PasswordManager& manager);
+std::string generatePassword(int length, bool includeUppercase, bool includeSpecialChars);
 
 int main() {
     // Getting file from user input
     std::string filePath = chooseFile();
+    PasswordManager passwordManager(filePath);
 
     // Proceeding with program
     std::string command;
@@ -36,7 +40,7 @@ int main() {
         } else if (command == "sort") {
             // TODO: Implement password sorting functionality
         } else if (command == "add") {
-            // TODO: Implement add password functionality
+            userAddPassword(passwordManager);
         } else if (command == "edit") {
             // TODO: Implement edit password functionality
         } else if (command == "delete") {
@@ -104,4 +108,69 @@ std::string chooseFile() {
 
         return selectedFilePath;
     }
+}
+
+void userAddPassword(PasswordManager& manager) {
+    std::string name, passwordText, category, website, login;
+
+    std::cout << "Enter the name for this password entry: ";
+    std::getline(std::cin, name);
+
+    std::cout << "Enter the password or press enter to generate a password: ";
+    std::getline(std::cin, passwordText);
+
+    // If the user didn't enter a password, generate one for them
+    if (passwordText.empty()) {
+        int length;
+        char includeUppercase, includeSpecialChars;
+        std::cout << "Enter the number of characters for the password: ";
+        std::cin >> length;
+
+        std::cout << "Include uppercase letters? (y/n): ";
+        std::cin >> includeUppercase;
+
+        std::cout << "Include special characters? (y/n): ";
+        std::cin >> includeSpecialChars;
+
+        passwordText = generatePassword(length, includeUppercase == 'y', includeSpecialChars == 'y');
+    }
+
+    std::cout << "Enter the category for this password: ";
+    std::getline(std::cin, category);
+
+    std::cout << "Enter the website for this password (optional): ";
+    std::getline(std::cin, website);
+
+    std::cout << "Enter the login for this password (optional): ";
+    std::getline(std::cin, login);
+
+    Password password(name, passwordText, category, website, login);
+    manager.addPassword(password);
+}
+
+std::string generatePassword(int length, bool includeUppercase, bool includeSpecialChars) {
+    std::string lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
+    std::string uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    std::string specialChars = "!@#$%^&*()";
+    std::string digits = "0123456789";
+
+    std::string charset = lowercaseLetters + digits;
+    if (includeUppercase) {
+        charset += uppercaseLetters;
+    }
+    if (includeSpecialChars) {
+        charset += specialChars;
+    }
+
+    // Initialize the random number generator with the current time (otherwise each time program is run the same numbers will be generated)
+    std::srand(std::time(0));
+
+    std::string password;
+    for (int i = 0; i < length; i++) {
+        password += charset[std::rand() % charset.size()];
+    }
+
+    std::cout << "Generated password: " << password << std::endl;
+
+    return password;
 }
