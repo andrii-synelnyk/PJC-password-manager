@@ -5,6 +5,11 @@ Password::Password(const std::string& name, const std::string& passwordText, con
                    const std::string& website, const std::string& login)
         : name(name), passwordText(passwordText), category(category), website(website), login(login) {}
 
+
+std::string Password::to_string() const {
+    return name + ';' + passwordText + ';' + category + ';' + website + ';' + login;
+}
+
 // Getters
 std::string Password::getName() const {
     return name;
@@ -45,8 +50,4 @@ void Password::setWebsite(const std::string& website) {
 
 void Password::setLogin(const std::string& login) {
     this->login = login;
-}
-
-std::string Password::to_string() const {
-    return name + ';' + passwordText + ';' + category + ';' + website + ';' + login;
 }

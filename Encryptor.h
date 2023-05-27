@@ -16,5 +16,5 @@ public:
 
 private:
     int generateShift(const std::string& password);
-    int computeChecksum(const std::string& data);
+    std::string computeChecksum(const std::string& data);
 };

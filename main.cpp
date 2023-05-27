@@ -163,7 +163,7 @@ std::string generatePassword(int length, bool includeUppercase, bool includeSpec
     }
 
     // Initialize the random number generator with the current time (otherwise each time program is run the same numbers will be generated)
-    std::srand(std::time(0));
+    std::srand(std::time(nullptr));  // Seed the random number generator with the current time
 
     std::string password;
     for (int i = 0; i < length; i++) {

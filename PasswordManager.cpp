@@ -1,5 +1,4 @@
 #include "PasswordManager.h"
-#include <fstream>
 #include <iostream>
 
 
@@ -39,9 +38,10 @@ void PasswordManager::loadPasswords() {
     if (!encryptor.isFileEmpty(filePath)) {
         std::string passwordForFile = getPasswordInput();
 
+        // Decrypt data from file
         std::string decryptedData = encryptor.decrypt(filePath, passwordForFile);
-        //std::cout << decryptedData << std::endl; // DEBUG
 
+        // Convert decrypted data to password objects
         parseData(decryptedData);
     } else {
         std::cout << "File is empty" << std::endl; // DEBUG
@@ -55,9 +55,10 @@ void PasswordManager::savePasswords() {
         data += password.to_string() + "\n";
     }
 
-    // Encrypt and write the data to the file
+    // Get password for encryption
     std::string passwordForFile = getPasswordInput();
 
+    // Encrypt and write the data to the file
     encryptor.encrypt(filePath, passwordForFile, data);
 }
 
@@ -96,10 +97,10 @@ std::string PasswordManager::getPasswordInput(){
     std::string passwordForFile;
 
     if (!encryptor.isFileEmpty(filePath)) {
-        while (encryptor.decrypt(filePath, passwordForFile) == "Wrong password. Unable to decrypt.") {
+        do {
             std::cout << "Please enter a password for encrypted file: ";
             std::getline(std::cin, passwordForFile);
-        }
+        } while (encryptor.decrypt(filePath, passwordForFile) == "Wrong password. Unable to decrypt.");
     } else {
         std::cout << "Please enter new password for a file: ";
         std::getline(std::cin, passwordForFile);
