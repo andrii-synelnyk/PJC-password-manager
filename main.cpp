@@ -10,6 +10,7 @@ void userAddPassword(PasswordManager& manager);
 std::string generatePassword(int length, bool includeUppercase, bool includeSpecialChars);
 Category userAddCategory(PasswordManager& manager);
 void userDeletePassword(PasswordManager& manager);
+void userDeleteCategory(PasswordManager& manager);
 
 int main() {
     // Getting file from user input
@@ -50,7 +51,7 @@ int main() {
         } else if (command == "add_category") {
             userAddCategory(passwordManager);
         } else if (command == "delete_category") {
-            // TODO: Implement delete category functionality
+            userDeleteCategory(passwordManager);
         } else {
             std::cout << "Unknown command. Type 'help' for a list of commands." << std::endl;
         }
@@ -244,4 +245,13 @@ void userDeletePassword(PasswordManager& manager){
     std::getline(std::cin, name);
 
     manager.deletePassword(name);
+}
+
+void userDeleteCategory(PasswordManager& manager){
+    std::string name;
+
+    std::cout << "Enter the name of the category you want to delete: ";
+    std::getline(std::cin, name);
+
+    manager.deleteCategory(name);
 }

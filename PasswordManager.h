@@ -14,13 +14,15 @@ public:
 
     void addPassword(const Password& password);
     void editPassword(const std::string& name, const Password& newPassword);
-    void deletePassword(const std::string& name);
+    void deletePassword(const std::string& name, bool fromCategoryDeletion = false);
+    void deleteCategory(const std::string& name);
 
     std::vector<Password> searchPasswords(const std::string& searchParameter);
     std::vector<Password> sortPasswords(const std::string& sortParameter);
 
     void addCategory(const Category& category);
     std::vector<Category> getCategories();
+    void deleteCategoryPasswords(Category category);
 
 private:
     std::string filePath;

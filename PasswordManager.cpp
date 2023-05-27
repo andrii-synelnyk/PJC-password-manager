@@ -20,16 +20,33 @@ void PasswordManager::editPassword(const std::string& name, const Password& newP
     // TODO: implement
 }
 
-void PasswordManager::deletePassword(const std::string& name) {
+void PasswordManager::deletePassword(const std::string& name, bool fromCategoryDeletion) {
     auto it = std::find_if(passwords.begin(), passwords.end(), [&name](const Password& password) {
         return password.getName() == name;
     });
 
     if (it != passwords.end()) {
+        Category& category = (*it).getCategory();
+        category.removePassword((*it).getName());
+
         passwords.erase(it);
-        savePasswords();
+        if (!fromCategoryDeletion) savePasswords();
     } else {
         std::cout << "No password with the name: " << name << std::endl;
+    }
+}
+
+void PasswordManager::deleteCategory(const std::string& name){
+    auto it = std::find_if(categories.begin(), categories.end(), [&name](const Category& category) {
+        return category.getName() == name;
+    });
+
+    if (it != categories.end()) {
+        deleteCategoryPasswords(*it);
+        categories.erase(it);
+        savePasswords();
+    } else {
+        std::cout << "No category with the name: " << name << std::endl;
     }
 }
 
@@ -153,4 +170,12 @@ std::string PasswordManager::getPasswordInput(){
 
 std::vector<Category> PasswordManager::getCategories(){
     return categories;
+}
+
+void PasswordManager::deleteCategoryPasswords(Category category){
+    for (auto password : passwords){
+        if (password.getCategory().getName() == category.getName()){
+            deletePassword(password.getName(), true);
+        }
+    }
 }

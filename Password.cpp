@@ -27,7 +27,7 @@ std::string Password::getLogin() const {
     return login;
 }
 
-Category Password::getCategory() const { return category; }
+Category& Password::getCategory() { return category; }
 
 // Setters
 void Password::setName(const std::string& name) {
