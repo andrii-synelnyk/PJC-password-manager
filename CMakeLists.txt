@@ -3,4 +3,4 @@ project(Password_Generator)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Password_Generator main.cpp Password.h Password.cpp Encryptor.cpp Encryptor.h PasswordManager.cpp PasswordManager.h)
+add_executable(Password_Generator main.cpp Password.h Password.cpp Encryptor.cpp Encryptor.h PasswordManager.cpp PasswordManager.h Category.cpp Category.h)

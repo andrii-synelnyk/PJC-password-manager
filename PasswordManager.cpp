@@ -33,6 +33,12 @@ std::vector<Password> PasswordManager::sortPasswords(const std::string& sortPara
     return std::vector<Password>();
 }
 
+void PasswordManager::addCategory(const Category& category) {
+    categories.push_back(category);
+
+    std::cout << "Added category: " << category.getName() << std::endl;
+}
+
 void PasswordManager::loadPasswords() {
 
     if (!encryptor.isFileEmpty(filePath)) {
@@ -43,6 +49,7 @@ void PasswordManager::loadPasswords() {
 
         // Convert decrypted data to password objects
         parseData(decryptedData);
+        std::cout << "Loaded passwords from file" << std::endl;
     } else {
         std::cout << "File is empty" << std::endl; // DEBUG
     }
@@ -60,6 +67,8 @@ void PasswordManager::savePasswords() {
 
     // Encrypt and write the data to the file
     encryptor.encrypt(filePath, passwordForFile, data);
+
+    std::cout << "Saved changes" << std::endl;
 }
 
 void PasswordManager::parseData(const std::string& decryptedData) {
@@ -80,12 +89,29 @@ void PasswordManager::parseData(const std::string& decryptedData) {
         if (fields.size() >= 3) {
             std::string name = fields[0];
             std::string passwordText = fields[1];
-            std::string category = fields[2];
+            std::string categoryName = fields[2];
+
+            Category category("");
+            bool found = false;
+            for (const auto& cat : categories) {
+                if (cat.getName() == categoryName) {
+                    found = true;
+                    category = cat;
+                    break;
+                }
+            }
+            if (!found){
+                category = Category(categoryName);
+                addCategory(category);
+            }
+
             std::string website = fields.size() > 3 ? fields[3] : "";
             std::string login = fields.size() > 4 ? fields[4] : "";
 
             Password password(name, passwordText, category, website, login);
             passwords.push_back(password);
+
+            category.addPassword(password);
         } else {
             // Handle the error: each line must have at least 3 fields
             std::cerr << "Error: Invalid format for password data: " << line << std::endl;
@@ -107,4 +133,8 @@ std::string PasswordManager::getPasswordInput(){
     }
 
     return passwordForFile;
+}
+
+std::vector<Category> PasswordManager::getCategories(){
+    return categories;
 }

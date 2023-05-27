@@ -8,6 +8,7 @@
 std::string chooseFile();
 void userAddPassword(PasswordManager& manager);
 std::string generatePassword(int length, bool includeUppercase, bool includeSpecialChars);
+Category userAddCategory(PasswordManager& manager);
 
 int main() {
     // Getting file from user input
@@ -46,7 +47,7 @@ int main() {
         } else if (command == "delete") {
             // TODO: Implement delete password functionality
         } else if (command == "add_category") {
-            // TODO: Implement add category functionality
+            userAddCategory(passwordManager);
         } else if (command == "delete_category") {
             // TODO: Implement delete category functionality
         } else {
@@ -111,7 +112,8 @@ std::string chooseFile() {
 }
 
 void userAddPassword(PasswordManager& manager) {
-    std::string name, passwordText, category, website, login;
+    std::string name, passwordText, website, login;
+    Category category("");
 
     std::cout << "Enter the name for this password entry: ";
     std::getline(std::cin, name);
@@ -135,8 +137,49 @@ void userAddPassword(PasswordManager& manager) {
         passwordText = generatePassword(length, includeUppercase == 'y', includeSpecialChars == 'y');
     }
 
-    std::cout << "Enter the category for this password: ";
-    std::getline(std::cin, category);
+    // Inputting category
+    if (manager.getCategories().empty()) {
+        std::cout << "There are no categories yet. ";
+        category = userAddCategory(manager);
+    } else {
+        while (true){
+            int categoryIndex = 1;
+            std::vector<Category> categories;
+
+            for (const Category& cat : manager.getCategories()) {
+                std::cout << categoryIndex << ": " << cat.getName() << std::endl;
+                categories.push_back(cat);
+                categoryIndex++;
+            }
+
+            std::string input;
+            std::cout << "Please select an existing category from the list above, or enter the name for the new category: ";
+            std::getline(std::cin, input);
+
+            try {
+                // If the user entered a number, use it as an index into the list of categories
+                categoryIndex = std::stoi(input) - 1;
+                if (categoryIndex < 0 || categoryIndex >= categories.size()) {
+                    std::cout << "Invalid category number." << std::endl;
+                    categories.clear();
+                    categoryIndex = 1;
+                    continue; // Start the loop again to let the user choose a valid category
+                }
+                category = categories[categoryIndex];
+
+                std::cout << "Selected category: " << category.getName() << std::endl;
+            } catch (std::invalid_argument& e) {
+                // If the user didn't enter a number, treat the input as a category name
+                if (!input.empty()) {
+                    category = Category(input);
+                    manager.addCategory(category);
+                } else continue;
+            }
+
+            break;
+        }
+
+    }
 
     std::cout << "Enter the website for this password (optional): ";
     std::getline(std::cin, website);
@@ -146,6 +189,8 @@ void userAddPassword(PasswordManager& manager) {
 
     Password password(name, passwordText, category, website, login);
     manager.addPassword(password);
+
+    category.addPassword(password);
 }
 
 std::string generatePassword(int length, bool includeUppercase, bool includeSpecialChars) {
@@ -173,4 +218,20 @@ std::string generatePassword(int length, bool includeUppercase, bool includeSpec
     std::cout << "Generated password: " << password << std::endl;
 
     return password;
+}
+
+Category userAddCategory(PasswordManager& manager){
+    std::string name;
+
+    while (true) {
+        std::cout << "Enter the name for new category: ";
+        std::getline(std::cin, name);
+
+        if (!name.empty()) {
+            Category category(name);
+            manager.addCategory(category);
+
+            return category;
+        } else continue;
+    }
 }

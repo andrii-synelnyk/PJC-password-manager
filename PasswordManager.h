@@ -6,6 +6,8 @@
 
 #include "Encryptor.h"
 
+#include "Category.h"
+
 class PasswordManager {
 public:
     PasswordManager(const std::string& filePath);
@@ -17,10 +19,15 @@ public:
     std::vector<Password> searchPasswords(const std::string& searchParameter);
     std::vector<Password> sortPasswords(const std::string& sortParameter);
 
+    void addCategory(const Category& category);
+    std::vector<Category> getCategories();
+
 private:
     std::string filePath;
     std::vector<Password> passwords;
     Encryptor encryptor;
+
+    std::vector<Category> categories;
 
     void loadPasswords();
     void savePasswords();

@@ -1,13 +1,13 @@
 #include "Password.h"
 
 // Constructor
-Password::Password(const std::string& name, const std::string& passwordText, const std::string& category,
-                   const std::string& website, const std::string& login)
+Password::Password(const std::string& name, const std::string& passwordText, const Category& category,
+         const std::string& website, const std::string& login)
         : name(name), passwordText(passwordText), category(category), website(website), login(login) {}
 
 
 std::string Password::to_string() const {
-    return name + ';' + passwordText + ';' + category + ';' + website + ';' + login;
+    return name + ';' + passwordText + ';' + category.getName() + ';' + website + ';' + login;
 }
 
 // Getters
@@ -19,10 +19,6 @@ std::string Password::getPasswordText() const {
     return passwordText;
 }
 
-std::string Password::getCategory() const {
-    return category;
-}
-
 std::string Password::getWebsite() const {
     return website;
 }
@@ -30,6 +26,8 @@ std::string Password::getWebsite() const {
 std::string Password::getLogin() const {
     return login;
 }
+
+Category Password::getCategory() const { return category; }
 
 // Setters
 void Password::setName(const std::string& name) {
@@ -40,14 +38,14 @@ void Password::setPasswordText(const std::string& passwordText) {
     this->passwordText = passwordText;
 }
 
-void Password::setCategory(const std::string& category) {
-    this->category = category;
-}
-
 void Password::setWebsite(const std::string& website) {
     this->website = website;
 }
 
 void Password::setLogin(const std::string& login) {
     this->login = login;
+}
+
+void Password::setCategory(const Category& category) {
+    this->category = category;
 }
