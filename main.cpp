@@ -9,6 +9,7 @@ std::string chooseFile();
 void userAddPassword(PasswordManager& manager);
 std::string generatePassword(int length, bool includeUppercase, bool includeSpecialChars);
 Category userAddCategory(PasswordManager& manager);
+void userDeletePassword(PasswordManager& manager);
 
 int main() {
     // Getting file from user input
@@ -45,7 +46,7 @@ int main() {
         } else if (command == "edit") {
             // TODO: Implement edit password functionality
         } else if (command == "delete") {
-            // TODO: Implement delete password functionality
+            userDeletePassword(passwordManager);
         } else if (command == "add_category") {
             userAddCategory(passwordManager);
         } else if (command == "delete_category") {
@@ -116,7 +117,7 @@ void userAddPassword(PasswordManager& manager) {
     Category category("");
 
     std::cout << "Enter the name for this password entry: ";
-    std::getline(std::cin, name);
+    std::getline(std::cin, name); // get line for reading spaces
 
     std::cout << "Enter the password or press enter to generate a password: ";
     std::getline(std::cin, passwordText);
@@ -234,4 +235,13 @@ Category userAddCategory(PasswordManager& manager){
             return category;
         } else continue;
     }
+}
+
+void userDeletePassword(PasswordManager& manager){
+    std::string name;
+
+    std::cout << "Enter the name of the password you want to delete: ";
+    std::getline(std::cin, name);
+
+    manager.deletePassword(name);
 }

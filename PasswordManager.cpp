@@ -1,5 +1,6 @@
 #include "PasswordManager.h"
 #include <iostream>
+#include <algorithm>
 
 
 PasswordManager::PasswordManager(const std::string& filePath)
@@ -20,7 +21,16 @@ void PasswordManager::editPassword(const std::string& name, const Password& newP
 }
 
 void PasswordManager::deletePassword(const std::string& name) {
-    // TODO: implement
+    auto it = std::find_if(passwords.begin(), passwords.end(), [&name](const Password& password) {
+        return password.getName() == name;
+    });
+
+    if (it != passwords.end()) {
+        passwords.erase(it);
+        savePasswords();
+    } else {
+        std::cout << "No password with the name: " << name << std::endl;
+    }
 }
 
 std::vector<Password> PasswordManager::searchPasswords(const std::string& searchParameter) {
@@ -56,14 +66,20 @@ void PasswordManager::loadPasswords() {
 }
 
 void PasswordManager::savePasswords() {
+    // Get password for encryption
+    std::string passwordForFile = getPasswordInput();
+
+    if (passwords.empty()) {
+        encryptor.clearFile(filePath);
+        std::cout << "No passwords left in the file. File is empty now." << std::endl;
+        return;
+    }
+
     // Convert all Password objects to strings
     std::string data;
     for (const Password& password : passwords) {
         data += password.to_string() + "\n";
     }
-
-    // Get password for encryption
-    std::string passwordForFile = getPasswordInput();
 
     // Encrypt and write the data to the file
     encryptor.encrypt(filePath, passwordForFile, data);
@@ -126,7 +142,7 @@ std::string PasswordManager::getPasswordInput(){
         do {
             std::cout << "Please enter a password for encrypted file: ";
             std::getline(std::cin, passwordForFile);
-        } while (encryptor.decrypt(filePath, passwordForFile) == "Wrong password. Unable to decrypt.");
+        } while (encryptor.decrypt(filePath, passwordForFile) == "Wrong password.");
     } else {
         std::cout << "Please enter new password for a file: ";
         std::getline(std::cin, passwordForFile);

@@ -13,6 +13,7 @@ public:
     void encrypt(const std::string& filePath, const std::string& password, const std::string& data);
     std::string decrypt(const std::string& filePath, const std::string& password);
     bool isFileEmpty(const std::string& filePath);
+    void clearFile(const std::string& filePath);
 
 private:
     int generateShift(const std::string& password);

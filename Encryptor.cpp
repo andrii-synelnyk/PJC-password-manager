@@ -98,3 +98,8 @@ bool Encryptor::isFileEmpty(const std::string& filePath){
     if (data.empty()) return true;
     return false;
 }
+
+void Encryptor::clearFile(const std::string& filePath){
+    std::ofstream file(filePath, std::ios::trunc);
+    file.close();
+}
