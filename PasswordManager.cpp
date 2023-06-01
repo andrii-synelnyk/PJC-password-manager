@@ -95,7 +95,7 @@ void PasswordManager::savePasswords() {
     // Convert all Password objects to strings
     std::string data;
     for (const Password& password : passwords) {
-        data += password.to_string() + "\n";
+        data += password.to_string();
     }
 
     // Encrypt and write the data to the file
@@ -114,7 +114,7 @@ void PasswordManager::parseData(const std::string& decryptedData) {
         std::vector<std::string> fields;
 
         // Split each line into fields using ';' as the delimiter
-        while (std::getline(lineStream, field, ';')) {
+        while (std::getline(lineStream, field, ' ')) {
             fields.push_back(field);
         }
 
@@ -172,10 +172,29 @@ std::vector<Category> PasswordManager::getCategories(){
     return categories;
 }
 
-void PasswordManager::deleteCategoryPasswords(Category category){
+void PasswordManager::deleteCategoryPasswords(const Category& category){ // made const & here after testing
     for (auto password : passwords){
         if (password.getCategory().getName() == category.getName()){
             deletePassword(password.getName(), true);
         }
+    }
+}
+
+void PasswordManager::checkIfPasswordUsed(const std::string& password) {
+    std::vector<Password> usedPasswords;
+
+    for (const auto& pas : passwords){
+        if (pas.getPasswordText() == password){
+            usedPasswords.push_back(pas);
+        }
+    }
+
+    if (!usedPasswords.empty()) {
+        std::cout << "This password has been used in the following entries:" << std::endl;
+        for (const auto& pas : usedPasswords) {
+            std::cout << pas.to_string() << std::endl;
+        }
+    } else {
+        std::cout << "This password has not been used before." << std::endl;
     }
 }

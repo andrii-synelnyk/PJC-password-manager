@@ -22,7 +22,9 @@ public:
 
     void addCategory(const Category& category);
     std::vector<Category> getCategories();
-    void deleteCategoryPasswords(Category category);
+    void deleteCategoryPasswords(const Category& category);
+
+    void checkIfPasswordUsed(const std::string& password);
 
 private:
     std::string filePath;

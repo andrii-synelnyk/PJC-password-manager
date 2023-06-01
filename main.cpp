@@ -143,6 +143,7 @@ void userAddPassword(PasswordManager& manager) {
         passwordText = generatePassword(length, includeUppercase == 'y', includeSpecialChars == 'y');
     } else {
         evaluatePasswordStrength(passwordText);
+        manager.checkIfPasswordUsed(passwordText);
     }
 
     // Inputting category

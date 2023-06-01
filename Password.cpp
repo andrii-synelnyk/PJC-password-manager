@@ -7,7 +7,7 @@ Password::Password(const std::string& name, const std::string& passwordText, con
 
 
 std::string Password::to_string() const {
-    return name + ';' + passwordText + ';' + category.getName() + ';' + website + ';' + login;
+    return name + ' ' + passwordText + ' ' + category.getName() + ' ' + website + ' ' + login;
 }
 
 // Getters
