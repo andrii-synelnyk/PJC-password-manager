@@ -17,7 +17,6 @@ public:
     void deletePassword(const std::string& name, bool fromCategoryDeletion = false);
     void deleteCategory(const std::string& name);
 
-    std::vector<Password> searchPasswords(const std::string& searchParameter);
     std::vector<Password> sortPasswords(const std::string& sortParameter);
 
     void addCategory(const Category& category);
@@ -25,6 +24,7 @@ public:
     void deleteCategoryPasswords(const Category& category);
 
     void checkIfPasswordUsed(const std::string& password);
+    void searchPasswords(const std::string& pattern);
 
 private:
     std::string filePath;

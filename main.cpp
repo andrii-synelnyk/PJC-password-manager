@@ -12,6 +12,7 @@ Category userAddCategory(PasswordManager& manager);
 void userDeletePassword(PasswordManager& manager);
 void userDeleteCategory(PasswordManager& manager);
 void evaluatePasswordStrength(const std::string& password);
+void userSearch(PasswordManager& manager);
 
 int main() {
     // Getting file from user input
@@ -40,7 +41,7 @@ int main() {
             std::cout << "add_category - Add a new category" << std::endl;
             std::cout << "delete_category - Delete a category" << std::endl;
         } else if (command == "search") {
-            // TODO: Implement password search functionality
+            userSearch(passwordManager);
         } else if (command == "sort") {
             // TODO: Implement password sorting functionality
         } else if (command == "add") {
@@ -292,4 +293,13 @@ void userDeleteCategory(PasswordManager& manager){
     std::getline(std::cin, name);
 
     manager.deleteCategory(name);
+}
+
+void userSearch(PasswordManager& manager){
+    std::string pattern;
+
+    std::cout << "Enter pattern which you want to search in passwords: ";
+    std::getline(std::cin, pattern);
+
+    manager.searchPasswords(pattern);
 }

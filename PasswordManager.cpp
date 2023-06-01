@@ -1,6 +1,7 @@
 #include "PasswordManager.h"
 #include <iostream>
 #include <algorithm>
+#include <regex>
 
 
 PasswordManager::PasswordManager(const std::string& filePath)
@@ -26,7 +27,7 @@ void PasswordManager::deletePassword(const std::string& name, bool fromCategoryD
     });
 
     if (it != passwords.end()) {
-        Category& category = (*it).getCategory();
+        Category& category = (*it).getCategoryCanModify();
         category.removePassword((*it).getName());
 
         passwords.erase(it);
@@ -50,9 +51,22 @@ void PasswordManager::deleteCategory(const std::string& name){
     }
 }
 
-std::vector<Password> PasswordManager::searchPasswords(const std::string& searchParameter) {
-    // TODO: implement
-    return std::vector<Password>();
+void PasswordManager::searchPasswords(const std::string& pattern) {
+    std::regex e(".*" + pattern + ".*");  // a regex that will match any string containing the input pattern
+    bool found = false;
+
+    for (const auto& pas : passwords){
+        if (std::regex_match(pas.getName(), e) ||
+            std::regex_match(pas.getPasswordText(), e) ||
+            std::regex_match(pas.getWebsite(), e) ||
+            std::regex_match(pas.getLogin(), e) ||
+            std::regex_match(pas.getCategoryCannotModify().getName(), e)) {
+            std::cout << pas.to_string() << std::endl;
+            found = true;
+        }
+    }
+
+    if (!found) std::cout << "There are no elements in passwords matching provided pattern." << std::endl;
 }
 
 std::vector<Password> PasswordManager::sortPasswords(const std::string& sortParameter) {
@@ -173,8 +187,8 @@ std::vector<Category> PasswordManager::getCategories(){
 }
 
 void PasswordManager::deleteCategoryPasswords(const Category& category){ // made const & here after testing
-    for (auto password : passwords){
-        if (password.getCategory().getName() == category.getName()){
+    for (const auto& password : passwords){
+        if (password.getCategoryCannotModify().getName() == category.getName()){
             deletePassword(password.getName(), true);
         }
     }

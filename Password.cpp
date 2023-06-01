@@ -6,7 +6,7 @@ Password::Password(const std::string& name, const std::string& passwordText, con
         : name(name), passwordText(passwordText), category(category), website(website), login(login) {}
 
 
-std::string Password::to_string() const {
+std::string Password::to_string() const { // const here means that the function is read only and will not modify any fields of Password objects
     return name + ' ' + passwordText + ' ' + category.getName() + ' ' + website + ' ' + login;
 }
 
@@ -27,7 +27,9 @@ std::string Password::getLogin() const {
     return login;
 }
 
-Category& Password::getCategory() { return category; }
+Category& Password::getCategoryCanModify() { return category; }
+
+const Category& Password::getCategoryCannotModify() const { return category; } // guaranties that neither Password object nor Category object returned can be modified
 
 // Setters
 void Password::setName(const std::string& name) {

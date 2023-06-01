@@ -13,7 +13,8 @@ public:
     // Getters
     std::string getName() const;
     std::string getPasswordText() const;
-    Category& getCategory();
+    Category& getCategoryCanModify();
+    const Category& getCategoryCannotModify() const;
     std::string getWebsite() const;
     std::string getLogin() const;
 
