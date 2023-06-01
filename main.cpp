@@ -13,6 +13,7 @@ void userDeletePassword(PasswordManager& manager);
 void userDeleteCategory(PasswordManager& manager);
 void evaluatePasswordStrength(const std::string& password);
 void userSearch(PasswordManager& manager);
+void userSort(PasswordManager& manager);
 
 int main() {
     // Getting file from user input
@@ -43,7 +44,7 @@ int main() {
         } else if (command == "search") {
             userSearch(passwordManager);
         } else if (command == "sort") {
-            // TODO: Implement password sorting functionality
+            userSort(passwordManager);
         } else if (command == "add") {
             userAddPassword(passwordManager);
         } else if (command == "edit") {
@@ -302,4 +303,13 @@ void userSearch(PasswordManager& manager){
     std::getline(std::cin, pattern);
 
     manager.searchPasswords(pattern);
+}
+
+void userSort(PasswordManager& manager){
+    std::string parameters;
+
+    std::cout << "Enter parameters for sorting separated by spaces (default by name): ";
+    std::getline(std::cin, parameters);
+
+    manager.sortPasswords(parameters);
 }

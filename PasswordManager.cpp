@@ -69,9 +69,75 @@ void PasswordManager::searchPasswords(const std::string& pattern) {
     if (!found) std::cout << "There are no elements in passwords matching provided pattern." << std::endl;
 }
 
-std::vector<Password> PasswordManager::sortPasswords(const std::string& sortParameter) {
-    // TODO: implement
-    return std::vector<Password>();
+void PasswordManager::sortPasswords(const std::string& input) {
+    // Read and divide user input
+    std::istringstream lineStream(input);
+    std::string parameter;
+    std::vector<std::string> parameters;
+
+    // Split each line into fields using ' ' as the delimiter
+    while (std::getline(lineStream, parameter, ' ')) {
+        parameters.push_back(parameter);
+    }
+
+    // Initialize flags based on user input
+    bool name, password, category, website, login;
+
+    for (const std::string& par : parameters){
+        if (par == "name") name = true;
+        else if (par == "password") password = true;
+        else if (par == "category") category = true;
+        else if (par == "website") website = true;
+        else if (par == "login") login = true;
+    }
+
+    // Make a copy of passwords to sort them
+    std::vector<Password> copiedPasswords = passwords;
+
+    // Sort passwords
+    std::sort(copiedPasswords.begin(), copiedPasswords.end(),
+              [&name, &password, &category, &website, &login](const Password& a, const Password& b) {
+
+        if (name) {
+            if (a.getName() != b.getName()) {
+                return a.getName() < b.getName();
+            }
+        }
+
+        if (password){
+            if (a.getPasswordText().size() != b.getPasswordText().size()) {
+                return a.getPasswordText().size() < b.getPasswordText().size();
+            } else if(a.getPasswordText() != b.getPasswordText()){
+                return a.getPasswordText() < b.getPasswordText();
+            }
+        }
+
+        if (category){
+            if (a.getCategoryCannotModify().getName() != b.getCategoryCannotModify().getName()) {
+                return a.getCategoryCannotModify().getName() < b.getCategoryCannotModify().getName();
+            }
+        }
+
+        if (website){
+            if (a.getWebsite() != b.getWebsite()) {
+                return a.getWebsite() < b.getWebsite();
+            }
+        }
+
+        if (login){
+            if (a.getLogin() != b.getLogin()) {
+                return a.getLogin() < b.getLogin();
+            }
+        }
+
+        // Fallback to name if all fields are the same
+        return a.getName() < b.getName();
+    });
+
+    // Print the sorted passwords
+    for (const auto& pas : copiedPasswords) {
+        std::cout << pas.to_string() << std::endl;
+    }
 }
 
 void PasswordManager::addCategory(const Category& category) {
@@ -93,6 +159,7 @@ void PasswordManager::loadPasswords() {
         std::cout << "Loaded passwords from file" << std::endl;
     } else {
         std::cout << "File is empty" << std::endl; // DEBUG
+        // put enter new password for file here and use it everywhere in program after
     }
 }
 
@@ -109,7 +176,7 @@ void PasswordManager::savePasswords() {
     // Convert all Password objects to strings
     std::string data;
     for (const Password& password : passwords) {
-        data += password.to_string();
+        data += password.to_string() + '\n';
     }
 
     // Encrypt and write the data to the file
@@ -127,7 +194,7 @@ void PasswordManager::parseData(const std::string& decryptedData) {
         std::string field;
         std::vector<std::string> fields;
 
-        // Split each line into fields using ';' as the delimiter
+        // Split each line into fields using ' ' as the delimiter
         while (std::getline(lineStream, field, ' ')) {
             fields.push_back(field);
         }
