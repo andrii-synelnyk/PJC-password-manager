@@ -149,23 +149,21 @@ void PasswordManager::addCategory(const Category& category) {
 void PasswordManager::loadPasswords() {
 
     if (!encryptor.isFileEmpty(filePath)) {
-        std::string passwordForFile = getPasswordInput();
+        correctPassword = getPasswordInput();
 
         // Decrypt data from file
-        std::string decryptedData = encryptor.decrypt(filePath, passwordForFile);
+        std::string decryptedData = encryptor.decrypt(filePath, correctPassword);
 
         // Convert decrypted data to password objects
         parseData(decryptedData);
         std::cout << "Loaded passwords from file" << std::endl;
     } else {
-        std::cout << "File is empty" << std::endl; // DEBUG
-        // put enter new password for file here and use it everywhere in program after
+        std::cout << "File is empty" << std::endl;
+        correctPassword = getPasswordInput();
     }
 }
 
 void PasswordManager::savePasswords() {
-    // Get password for encryption
-    std::string passwordForFile = getPasswordInput();
 
     if (passwords.empty()) {
         encryptor.clearFile(filePath);
@@ -180,7 +178,7 @@ void PasswordManager::savePasswords() {
     }
 
     // Encrypt and write the data to the file
-    encryptor.encrypt(filePath, passwordForFile, data);
+    encryptor.encrypt(filePath, correctPassword, data);
 
     std::cout << "Saved changes" << std::endl;
 }
@@ -240,7 +238,7 @@ std::string PasswordManager::getPasswordInput(){
         do {
             std::cout << "Please enter a password for encrypted file: ";
             std::getline(std::cin, passwordForFile);
-        } while (encryptor.decrypt(filePath, passwordForFile) == "Wrong password.");
+        } while (encryptor.decrypt(filePath, passwordForFile) == "Wrong password. Unable to decrypt.");
     } else {
         std::cout << "Please enter new password for a file: ";
         std::getline(std::cin, passwordForFile);

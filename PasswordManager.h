@@ -30,6 +30,8 @@ private:
     std::vector<Password> passwords;
     Encryptor encryptor;
 
+    std::string correctPassword; // is obtained only during runtime
+
     std::vector<Category> categories;
 
     void loadPasswords();
