@@ -11,6 +11,7 @@ std::string generatePassword(int length, bool includeUppercase, bool includeSpec
 Category userAddCategory(PasswordManager& manager);
 void userDeletePassword(PasswordManager& manager);
 void userDeleteCategory(PasswordManager& manager);
+void evaluatePasswordStrength(const std::string& password);
 
 int main() {
     // Getting file from user input
@@ -140,6 +141,8 @@ void userAddPassword(PasswordManager& manager) {
         std::cin.ignore(1, '\n');
 
         passwordText = generatePassword(length, includeUppercase == 'y', includeSpecialChars == 'y');
+    } else {
+        evaluatePasswordStrength(passwordText);
     }
 
     // Inputting category
@@ -223,6 +226,37 @@ std::string generatePassword(int length, bool includeUppercase, bool includeSpec
     std::cout << "Generated password: " << password << std::endl;
 
     return password;
+}
+
+void evaluatePasswordStrength(const std::string& password) {
+    int length = password.size();
+    bool hasLowercase = false, hasUppercase = false, hasDigit = false, hasSpecialChar = false;
+
+    for (char c : password) {
+        if (std::islower(c))
+            hasLowercase = true;
+        else if (std::isupper(c))
+            hasUppercase = true;
+        else if (std::isdigit(c))
+            hasDigit = true;
+        else
+            hasSpecialChar = true;
+    }
+
+    std::string strength;
+
+    if (length >= 8 && hasLowercase && hasUppercase && hasDigit && hasSpecialChar)
+        strength = "very strong";
+    else if (length >= 8 && hasLowercase && hasUppercase && hasDigit)
+        strength = "strong";
+    else if (length >= 8 && (hasLowercase || hasUppercase) && hasDigit)
+        strength = "medium";
+    else if (length >= 8)
+        strength = "weak";
+    else
+        strength = "very weak";
+
+    std::cout << "The password strength is " << strength << std::endl;
 }
 
 Category userAddCategory(PasswordManager& manager){
