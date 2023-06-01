@@ -129,12 +129,15 @@ void userAddPassword(PasswordManager& manager) {
         char includeUppercase, includeSpecialChars;
         std::cout << "Enter the number of characters for the password: ";
         std::cin >> length;
+        std::cin.ignore(1, '\n'); // clear buffer from newline character (because cin leaves newline) for any getLine that might be encountered further in program
 
         std::cout << "Include uppercase letters? (y/n): ";
         std::cin >> includeUppercase;
+        std::cin.ignore(1, '\n');
 
         std::cout << "Include special characters? (y/n): ";
         std::cin >> includeSpecialChars;
+        std::cin.ignore(1, '\n');
 
         passwordText = generatePassword(length, includeUppercase == 'y', includeSpecialChars == 'y');
     }
