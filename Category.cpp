@@ -1,6 +1,4 @@
 #include "Category.h"
-#include <algorithm>
-
 #include "Password.h"
 
 Category::Category(const std::string& name) : name(name) {}

@@ -1,7 +1,4 @@
-#include <random>
 #include "Encryptor.h"
-
-Encryptor::Encryptor() = default; // Can remove probably
 
 int Encryptor::generateShift(const std::string& password) {
     int shift = 0;

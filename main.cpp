@@ -64,6 +64,11 @@ int main() {
     return 0;
 }
 
+/**
+ * @brief Prompts the user to select a file
+ * @details This function lists the files in the current directory and prompts the user to select a file by entering its number or a direct path.
+ * @return The path of the selected file
+ */
 std::string chooseFile() {
     std::vector<std::filesystem::path> files;
     int fileIndex = 1;
@@ -117,6 +122,11 @@ std::string chooseFile() {
     }
 }
 
+/**
+ * @brief Facilitates the addition of a new password by the user
+ * @details This function prompts the user to enter necessary details for a password. If no password is provided, it generates one.
+ * @param manager The PasswordManager instance for managing passwords
+ */
 void userAddPassword(PasswordManager& manager) {
     std::string name, passwordText, website, login;
     Category category("");
@@ -204,6 +214,14 @@ void userAddPassword(PasswordManager& manager) {
     category.addPassword(password);
 }
 
+/**
+ * @brief Generates a password according to user specifications
+ * @details This function generates a password of a given length and can include uppercase letters and special characters based on user input.
+ * @param length Length of the password to generate
+ * @param includeUppercase Determines whether the password should include uppercase letters
+ * @param includeSpecialChars Determines whether the password should include special characters
+ * @return The generated password
+ */
 std::string generatePassword(int length, bool includeUppercase, bool includeSpecialChars) {
     std::string lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
     std::string uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -231,6 +249,11 @@ std::string generatePassword(int length, bool includeUppercase, bool includeSpec
     return password;
 }
 
+/**
+ * @brief Evaluates the strength of a password
+ * @details This function evaluates the strength of a given password based on its length and the types of characters it includes.
+ * @param password The password to evaluate
+ */
 void evaluatePasswordStrength(const std::string& password) {
     int length = password.size();
     bool hasLowercase = false, hasUppercase = false, hasDigit = false, hasSpecialChar = false;
@@ -262,6 +285,12 @@ void evaluatePasswordStrength(const std::string& password) {
     std::cout << "The password strength is " << strength << std::endl;
 }
 
+/**
+ * @brief Facilitates the addition of a new category by the user
+ * @details This function prompts the user to enter a name for a new category and adds it to the PasswordManager.
+ * @param manager The PasswordManager instance for managing categories
+ * @return The created Category object
+ */
 Category userAddCategory(PasswordManager& manager){
     std::string name;
 
@@ -278,6 +307,11 @@ Category userAddCategory(PasswordManager& manager){
     }
 }
 
+/**
+ * @brief Facilitates the deletion of a password by the user
+ * @details This function prompts the user to enter the name of a password and deletes it from the PasswordManager.
+ * @param manager The PasswordManager instance for managing passwords
+ */
 void userDeletePassword(PasswordManager& manager){
     std::string name;
 
@@ -287,6 +321,11 @@ void userDeletePassword(PasswordManager& manager){
     manager.deletePassword(name);
 }
 
+/**
+ * @brief Facilitates the deletion of a category by the user
+ * @details This function prompts the user to enter the name of a category and deletes it from the PasswordManager.
+ * @param manager The PasswordManager instance for managing categories
+ */
 void userDeleteCategory(PasswordManager& manager){
     std::string name;
 
@@ -296,6 +335,11 @@ void userDeleteCategory(PasswordManager& manager){
     manager.deleteCategory(name);
 }
 
+/**
+ * @brief Facilitates the searching of passwords by the user
+ * @details This function prompts the user to enter a search pattern and displays the matching passwords.
+ * @param manager The PasswordManager instance for managing passwords
+ */
 void userSearch(PasswordManager& manager){
     std::string pattern;
 
@@ -305,6 +349,12 @@ void userSearch(PasswordManager& manager){
     manager.searchPasswords(pattern);
 }
 
+
+/**
+ * @brief Facilitates the sorting of passwords by the user
+ * @details This function prompts the user to enter sorting parameters and sorts the passwords accordingly.
+ * @param manager The PasswordManager instance for managing passwords
+ */
 void userSort(PasswordManager& manager){
     std::string parameters;
 
@@ -314,6 +364,11 @@ void userSort(PasswordManager& manager){
     manager.sortPasswords(parameters);
 }
 
+/**
+ * @brief Facilitates the editing of a password by the user
+ * @details This function prompts the user to enter parameters for editing a password and applies the changes.
+ * @param manager The PasswordManager instance for managing passwords
+ */
 void userEditPassword(PasswordManager& manager){
     std::string parameters;
 
