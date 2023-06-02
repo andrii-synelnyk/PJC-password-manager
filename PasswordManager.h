@@ -17,7 +17,7 @@ public:
     void deletePassword(const std::string& name, bool fromCategoryDeletion = false);
     void deleteCategory(const std::string& name);
 
-    void addCategory(const Category& category);
+    void addCategory(const Category& category, bool print = true);
     std::vector<Category> getCategories();
     void deleteCategoryPasswords(const Category& category);
 

@@ -195,10 +195,10 @@ void PasswordManager::sortPasswords(const std::string& input) {
     }
 }
 
-void PasswordManager::addCategory(const Category& category) {
+void PasswordManager::addCategory(const Category& category, bool print) {
     categories.push_back(category);
 
-    std::cout << "Added category: " << category.getName() << std::endl;
+    if (print) std::cout << "Added category: " << category.getName() << std::endl;
 }
 
 void PasswordManager::loadPasswords() {
@@ -271,7 +271,7 @@ void PasswordManager::parseData(const std::string& decryptedData) {
             }
             if (!found){
                 category = Category(categoryName);
-                addCategory(category);
+                addCategory(category, false);
             }
 
             std::string website = fields.size() > 3 ? fields[3] : "";
