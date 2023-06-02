@@ -30,7 +30,7 @@ void PasswordManager::editPassword(const std::string& input) {
 
     // Check if user provided exactly 3 parameters
     if (parameters.size() != 3) {
-        std::cerr << "Wrong number of parameters. Expected 3." << std::endl;
+        std::cout << "[ERROR] Wrong number of parameters. Expected 3." << std::endl;
         return;
     }
 
@@ -71,7 +71,7 @@ void PasswordManager::editPassword(const std::string& input) {
             foundPassword = true;
         }
     }
-    if(!foundPassword) std::cerr << "There are no passwords with such name." << std::endl;
+    if(!foundPassword) std::cout << "[ERROR] There are no passwords with such name." << std::endl;
 
     savePasswords();
 }
@@ -88,7 +88,7 @@ void PasswordManager::deletePassword(const std::string& name, bool fromCategoryD
         passwords.erase(it);
         if (!fromCategoryDeletion) savePasswords();
     } else {
-        std::cerr << "No password with the name: " << name << std::endl;
+        std::cout << "[ERROR] No password with the name: " << name << std::endl;
     }
 }
 
@@ -102,7 +102,7 @@ void PasswordManager::deleteCategory(const std::string& name){
         categories.erase(it);
         savePasswords();
     } else {
-        std::cerr << "No category with the name: " << name << std::endl;
+        std::cout << "[ERROR] No category with the name: " << name << std::endl;
     }
 }
 
@@ -121,7 +121,7 @@ void PasswordManager::searchPasswords(const std::string& pattern) {
         }
     }
 
-    if (!found) std::cerr << "There are no elements in passwords matching provided pattern." << std::endl;
+    if (!found) std::cout << "[ERROR] There are no elements in passwords matching provided pattern." << std::endl;
 }
 
 void PasswordManager::sortPasswords(const std::string& input) {
@@ -283,7 +283,7 @@ void PasswordManager::parseData(const std::string& decryptedData) {
             category.addPassword(password);
         } else {
             // Handle the error: each line must have at least 3 fields
-            std::cerr << "Error: Invalid format for password data: " << line << std::endl;
+            std::cout << "[ERROR] Invalid format for password data: " << line << std::endl;
         }
     }
 }
