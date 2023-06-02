@@ -13,7 +13,7 @@ public:
     PasswordManager(const std::string& filePath);
 
     void addPassword(const Password& password);
-    void editPassword(const std::string& name, const Password& newPassword);
+    void editPassword(const std::string& parameters);
     void deletePassword(const std::string& name, bool fromCategoryDeletion = false);
     void deleteCategory(const std::string& name);
 

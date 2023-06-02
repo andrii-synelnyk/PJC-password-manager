@@ -14,6 +14,7 @@ void userDeleteCategory(PasswordManager& manager);
 void evaluatePasswordStrength(const std::string& password);
 void userSearch(PasswordManager& manager);
 void userSort(PasswordManager& manager);
+void userEditPassword(PasswordManager& manager);
 
 int main() {
     // Getting file from user input
@@ -48,7 +49,7 @@ int main() {
         } else if (command == "add") {
             userAddPassword(passwordManager);
         } else if (command == "edit") {
-            // TODO: Implement edit password functionality
+            userEditPassword(passwordManager);
         } else if (command == "delete") {
             userDeletePassword(passwordManager);
         } else if (command == "add_category") {
@@ -173,10 +174,9 @@ void userAddPassword(PasswordManager& manager) {
                 if (categoryIndex < 0 || categoryIndex >= categories.size()) {
                     std::cout << "Invalid category number." << std::endl;
                     categories.clear();
-                    categoryIndex = 1;
                     continue; // Start the loop again to let the user choose a valid category
                 }
-                category = categories[categoryIndex];
+                category = categories[categoryIndex]; // creating copy not actual category
 
                 std::cout << "Selected category: " << category.getName() << std::endl;
             } catch (std::invalid_argument& e) {
@@ -299,7 +299,7 @@ void userDeleteCategory(PasswordManager& manager){
 void userSearch(PasswordManager& manager){
     std::string pattern;
 
-    std::cout << "Enter pattern which you want to search in passwords: ";
+    std::cout << "Enter pattern which you want to search in passwords (default: press Enter to show all passwords): ";
     std::getline(std::cin, pattern);
 
     manager.searchPasswords(pattern);
@@ -308,8 +308,17 @@ void userSearch(PasswordManager& manager){
 void userSort(PasswordManager& manager){
     std::string parameters;
 
-    std::cout << "Enter parameters for sorting separated by spaces (default by name): ";
+    std::cout << "Enter parameters for sorting separated by spaces (default: press Enter to sort by name): ";
     std::getline(std::cin, parameters);
 
     manager.sortPasswords(parameters);
+}
+
+void userEditPassword(PasswordManager& manager){
+    std::string parameters;
+
+    std::cout << "Enter parameters for editing password in format <name> <field name> <new value>: ";
+    std::getline(std::cin, parameters);
+
+    manager.editPassword(parameters);
 }

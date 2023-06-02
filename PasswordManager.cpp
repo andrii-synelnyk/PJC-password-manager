@@ -17,8 +17,63 @@ void PasswordManager::addPassword(const Password& password) {
     savePasswords();
 }
 
-void PasswordManager::editPassword(const std::string& name, const Password& newPassword) {
-    // TODO: implement
+void PasswordManager::editPassword(const std::string& input) {
+    // Read and separate user input
+    std::istringstream lineStream(input);
+    std::string parameter;
+    std::vector<std::string> parameters;
+
+    // Split each line into fields using ' ' as the delimiter
+    while (std::getline(lineStream, parameter, ' ')) {
+        parameters.push_back(parameter);
+    }
+
+    // Check if user provided exactly 3 parameters
+    if (parameters.size() != 3) {
+        std::cout << "Wrong number of parameters. Expected 3." << std::endl;
+        return;
+    }
+
+    std::string name = parameters[0];
+    std::string field = parameters[1];
+    std::string newValue = parameters[2];
+    bool foundPassword = false;
+
+    for (Password& pass: passwords) {
+        if (pass.getName() == name) {
+            if (field == "name") {
+                pass.setName(newValue);
+            } else if (field == "passwordText") {
+                pass.setPasswordText(newValue);
+            } else if (field == "category") {
+                // Create category object, if category with such name doesn't exist
+                Category category("");
+                bool foundCategory = false;
+                for (const auto& cat : categories) {
+                    if (cat.getName() == newValue) {
+                        foundCategory = true;
+                        category = cat;
+                        break;
+                    }
+                }
+                if (!foundCategory){
+                    category = Category(newValue);
+                    addCategory(category);
+                }
+
+                pass.setCategory(category);
+                category.addPassword(pass);
+            } else if (field == "website") {
+                pass.setWebsite(newValue);
+            } else if (field == "login") {
+                pass.setLogin(newValue);
+            }
+            foundPassword = true;
+        }
+    }
+    if(!foundPassword) std::cerr << "There are no passwords with such name." << std::endl;
+
+    savePasswords();
 }
 
 void PasswordManager::deletePassword(const std::string& name, bool fromCategoryDeletion) {
@@ -70,7 +125,7 @@ void PasswordManager::searchPasswords(const std::string& pattern) {
 }
 
 void PasswordManager::sortPasswords(const std::string& input) {
-    // Read and divide user input
+    // Read and separate user input
     std::istringstream lineStream(input);
     std::string parameter;
     std::vector<std::string> parameters;
@@ -203,12 +258,14 @@ void PasswordManager::parseData(const std::string& decryptedData) {
             std::string passwordText = fields[1];
             std::string categoryName = fields[2];
 
+            // Check if category with such name already exists, if it doesn't create new one
+            // Not to create two separate category objects from decrypted passwords text which have the same category
             Category category("");
             bool found = false;
             for (const auto& cat : categories) {
                 if (cat.getName() == categoryName) {
                     found = true;
-                    category = cat;
+                    category = cat; // creating copy not actual category
                     break;
                 }
             }
@@ -251,11 +308,18 @@ std::vector<Category> PasswordManager::getCategories(){
     return categories;
 }
 
-void PasswordManager::deleteCategoryPasswords(const Category& category){ // made const & here after testing
-    for (const auto& password : passwords){
-        if (password.getCategoryCannotModify().getName() == category.getName()){
-            deletePassword(password.getName(), true);
+void PasswordManager::deleteCategoryPasswords(const Category& category) {
+    // First, find all the passwords that need to be deleted
+    std::vector<std::string> passwordsToDelete;
+    for (const Password& password : passwords) {
+        if (password.getCategoryCannotModify().getName() == category.getName()) {
+            passwordsToDelete.push_back(password.getName());
         }
+    }
+
+    // Then, delete them
+    for (const std::string& passwordName : passwordsToDelete) {
+        deletePassword(passwordName, true);
     }
 }
 
