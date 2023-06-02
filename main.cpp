@@ -26,7 +26,7 @@ int main() {
     std::cout << "Welcome to the Password Manager. Type 'help' for a list of commands." << std::endl;
 
     while (true) {
-        std::cout << "> ";
+        //std::cout << "> ";
         std::getline(std::cin, command);
 
         if (command == "quit") {
@@ -57,7 +57,7 @@ int main() {
         } else if (command == "delete_category") {
             userDeleteCategory(passwordManager);
         } else {
-            std::cout << "Unknown command. Type 'help' for a list of commands." << std::endl;
+            std::cerr << "Unknown command. Type 'help' for a list of commands." << std::endl;
         }
     }
 
@@ -92,7 +92,7 @@ std::string chooseFile() {
             // If the user entered a number, use it as an index into the list of files
             fileIndex = std::stoi(input) - 1;
             if (fileIndex < 0 || fileIndex >= files.size()) {
-                std::cout << "Invalid file number." << std::endl;
+                std::cerr << "Invalid file number." << std::endl;
                 files.clear();
                 fileIndex = 1;
                 continue; // Start the loop again to let the user choose a valid file
@@ -105,7 +105,7 @@ std::string chooseFile() {
 
         // Check if the file exists
         if (!std::filesystem::exists(selectedFilePath)) {
-            std::cout << "File does not exist: " << selectedFilePath << std::endl;
+            std::cerr << "File does not exist: " << selectedFilePath << std::endl;
             files.clear();
             fileIndex = 1;
             continue; // Start the loop again to let the user choose a valid file
@@ -172,7 +172,7 @@ void userAddPassword(PasswordManager& manager) {
                 // If the user entered a number, use it as an index into the list of categories
                 categoryIndex = std::stoi(input) - 1;
                 if (categoryIndex < 0 || categoryIndex >= categories.size()) {
-                    std::cout << "Invalid category number." << std::endl;
+                    std::cerr << "Invalid category number." << std::endl;
                     categories.clear();
                     continue; // Start the loop again to let the user choose a valid category
                 }

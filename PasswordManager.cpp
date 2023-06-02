@@ -30,7 +30,7 @@ void PasswordManager::editPassword(const std::string& input) {
 
     // Check if user provided exactly 3 parameters
     if (parameters.size() != 3) {
-        std::cout << "Wrong number of parameters. Expected 3." << std::endl;
+        std::cerr << "Wrong number of parameters. Expected 3." << std::endl;
         return;
     }
 
@@ -88,7 +88,7 @@ void PasswordManager::deletePassword(const std::string& name, bool fromCategoryD
         passwords.erase(it);
         if (!fromCategoryDeletion) savePasswords();
     } else {
-        std::cout << "No password with the name: " << name << std::endl;
+        std::cerr << "No password with the name: " << name << std::endl;
     }
 }
 
@@ -102,7 +102,7 @@ void PasswordManager::deleteCategory(const std::string& name){
         categories.erase(it);
         savePasswords();
     } else {
-        std::cout << "No category with the name: " << name << std::endl;
+        std::cerr << "No category with the name: " << name << std::endl;
     }
 }
 
@@ -121,7 +121,7 @@ void PasswordManager::searchPasswords(const std::string& pattern) {
         }
     }
 
-    if (!found) std::cout << "There are no elements in passwords matching provided pattern." << std::endl;
+    if (!found) std::cerr << "There are no elements in passwords matching provided pattern." << std::endl;
 }
 
 void PasswordManager::sortPasswords(const std::string& input) {
