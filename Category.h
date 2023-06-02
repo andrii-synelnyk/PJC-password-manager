@@ -15,8 +15,6 @@ public:
 
     void removePassword(const std::string& passwordName);
 
-    const std::vector<Password>& getPasswords() const;
-
 private:
     std::string name;
     std::vector<Password> passwords;

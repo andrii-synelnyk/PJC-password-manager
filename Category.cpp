@@ -18,7 +18,3 @@ void Category::removePassword(const std::string& passwordName) {
                                    }),
                     passwords.end());
 }
-
-const std::vector<Password>& Category::getPasswords() const {
-    return passwords;
-}
