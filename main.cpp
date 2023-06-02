@@ -76,7 +76,7 @@ std::string chooseFile() {
     // List all files in the current directory
     std::filesystem::path currentPath = std::filesystem::current_path();
     std::filesystem::path projectPath = currentPath.parent_path();
-    std::filesystem::path filesDirectory = projectPath / "Source files/";
+    std::filesystem::path filesDirectory = projectPath / "Encrypted files/";
 
     while (true) {
         for (const auto& entry : std::filesystem::directory_iterator(filesDirectory)) {
